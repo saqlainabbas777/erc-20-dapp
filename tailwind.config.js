@@ -5,6 +5,21 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      xs: '300px',
+      sm: '480px',
+      md: '768px',
+      lg: '976px',
+      xl: '1440px',
+    },
+    colors: {
+      lightGold: '#b09a40',
+      gradBlue: '#07242F',
+      whiteOpa90: 'rgba(255,255,255,0.90)'
+    },
+    fontFamily: {
+      josefinSans: ['"Josefin Sans"', 'serif']
+    },
     extend: {},
   },
   plugins: [],
