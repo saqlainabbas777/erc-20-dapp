@@ -1,5 +1,5 @@
 import type {NextPage} from 'next'
-import {useContext} from "react";
+import {Fragment, useContext} from "react";
 import {AppContext} from "../context/appContext";
 import WavyText from "../components/wavyText/wavyText";
 import {motion} from 'framer-motion';
@@ -9,18 +9,20 @@ const placeSelfStartMxAuto = `place-self-start mx-auto`;
 const Home: NextPage = () => {
     const {connectWallet} = useContext(AppContext);
     return (
-        <div className={'grid min-h-screen place-items-center'}>
-            <WavyText text="ERC-20 DAPP" replay={true}/>
-            <motion.button
-                whileHover={{scale: 1.07}}
-                whileTap={{scale: 0.9}}
-                onClick={() => {
-                    connectWallet()
-                }}
-                className={`${button}${placeSelfStartMxAuto}`}>
-                Connect Wallet
-            </motion.button>
-        </div>
+        <Fragment>
+            <div className={'grid min-h-screen place-items-center'}>
+                <WavyText text="ERC-20 DAPP" replay={true}/>
+                <motion.button
+                    whileHover={{scale: 1.07}}
+                    whileTap={{scale: 0.9}}
+                    onClick={() => {
+                        connectWallet()
+                    }}
+                    className={`${button}${placeSelfStartMxAuto}`}>
+                    Connect Wallet
+                </motion.button>
+            </div>
+        </Fragment>
     )
 }
 

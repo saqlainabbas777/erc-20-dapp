@@ -1,24 +1,35 @@
 import type {NextPage} from 'next'
 import {Form, Formik, FormikHelpers} from "formik";
 import {contractConnectSchema} from "../../schema/contractConnect.schema";
-import Web3Modal from "web3modal";
-import {ethers} from "ethers";
-import Erc20Abi from '../../helper/erc20Abi';
 import ErrorMessage from "../../components/errorMessage/errorMessage";
 import {motion, useAnimation} from "framer-motion";
 import {useInView} from "react-intersection-observer";
 import {useEffect} from "react";
 import {getContractMetaData} from "../../services/contractService";
+import {toastTransactionProcess} from "../../helper/helperMethod";
 
-
+const contractDetailContainer = `grid min-h-screen place-items-center`;
+const cardContainer = `flex flex-col items-center w-full py-4 bg-bgCard rounded-lg border-none shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700`;
+const cardHeader = `mb-2 text-2xl font-bold font-josefinSans tracking-tight text-lightGold dark:text-white`;
+const cardFlex = `flex flex-col justify-between w-full p-4 leading-normal`;
+const formContainer = `flex md:flex-row xs:flex-col xs: gap-2 w-full justify-between items-start`;
+const addressInput = `bg-gray-100 border-none font-josefinSans text-sm rounded-lg  block md:w-6/6 xs:w-full p-2.5 dark:placeholder-gray-400`;
+const inputContainer = `flex flex-col w-full`;
+const contractBtn = `bg-lightGold text-whiteOpa90 font-josefinSans font-bold py-2 px-6 rounded-full md:self-start xs:self-end`;
 const ContractDetail: NextPage = () => {
     const controls = useAnimation();
     const [ref, inView] = useInView();
-    const handleSubmit = async (values: any, formikHelpers: FormikHelpers<any>) => {
-        getContractMetaData(values.contractAddress).then(res => {
-            console.log('res', res);
+    const handleSubmit = async (values: any) => {
+        getContractMetaData(values.contractAddress).then(metaData => {
+            // put metaData on context and route to the next page
+        }).catch(err => {
+            const error = JSON.stringify(err);
         })
-
+        await toastTransactionProcess(getContractMetaData(values.contractAddress), {
+            pending: 'Fetching Contract Data...',
+            success: 'Contract Data Fetched',
+            error: 'Unable to access contract through this address'
+        });
     };
 
 
@@ -40,11 +51,11 @@ const ContractDetail: NextPage = () => {
         }
     }, [controls, inView])
     return (
-        <div className={'grid min-h-screen place-items-center'}>
+        <div className={contractDetailContainer}>
             <motion.div ref={ref} animate={controls}
-                className="flex flex-col items-center w-full py-4 bg-bgCard rounded-lg border-none shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                <div className="flex flex-col justify-between w-full p-4 leading-normal">
-                    <h5 className="mb-2 text-2xl font-bold font-josefinSans tracking-tight text-lightGold dark:text-white">Connect
+                className={cardContainer}>
+                <div className={cardFlex}>
+                    <h5 className={cardHeader}>Connect
                         Contract</h5>
                     <Formik
                         initialValues={{
@@ -56,10 +67,10 @@ const ContractDetail: NextPage = () => {
                         {({values, handleChange, handleBlur, errors, touched}) => (
                             <Form>
                                 <div
-                                    className={'flex md:flex-row xs:flex-col xs: gap-2 w-full justify-between items-start'}>
-                                    <div className={'flex flex-col w-full'}>
+                                    className={formContainer}>
+                                    <div className={inputContainer}>
                                         <input
-                                            className={'bg-gray-100 border-none font-josefinSans text-sm rounded-lg  block md:w-6/6 xs:w-full p-2.5 dark:placeholder-gray-400'}
+                                            className={addressInput}
                                             type={'text'}
                                             name={'contractAddress'}
                                             value={values.contractAddress}
@@ -74,7 +85,7 @@ const ContractDetail: NextPage = () => {
                                         }
                                     </div>
                                     <button
-                                        className={'bg-lightGold text-whiteOpa90 font-josefinSans font-bold py-2 px-6 rounded-full md:self-start xs:self-end'}
+                                        className={contractBtn}
                                         type={'submit'}>Connect
                                     </button>
                                 </div>
