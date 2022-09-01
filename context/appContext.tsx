@@ -27,7 +27,7 @@ export const AppProvider = ({children}) => {
                 const accounts = await metaMask.request({method: 'eth_requestAccounts'});
                 setCurrentAccount(accounts[0]);
                 if (accounts.length) {
-                    router.push('/appDetail').then();
+                    router.push('/ContractDetail').then();
                 }
             } catch(error) {
                 console.log('error', error);
@@ -44,7 +44,7 @@ export const AppProvider = ({children}) => {
                 const accounts = await metaMask.request({method: 'eth_accounts'});
                 if (accounts.length) {
                     setCurrentAccount(accounts[0]);
-                    router.push('/appDetail').then();
+                    router.push('/contractDetail').then();
                 }
             } catch(error) {
                 console.log('error', error);

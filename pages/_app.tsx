@@ -3,6 +3,7 @@ import type {AppProps} from 'next/app'
 import {AppProvider} from "../context/appContext";
 declare global {
     interface Window {
+        // @ts-ignore
         ethereum?: any;
     }
 }

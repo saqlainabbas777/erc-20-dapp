@@ -15,7 +15,10 @@ module.exports = {
     colors: {
       lightGold: '#b09a40',
       gradBlue: '#07242F',
-      whiteOpa90: 'rgba(255,255,255,0.90)'
+      whiteOpa90: 'rgba(255,255,255,0.90)',
+      bgCard: '#0f303d',
+      darkRed: '#8B0000FF',
+      red: '#FF0000FF'
     },
     fontFamily: {
       josefinSans: ['"Josefin Sans"', 'serif']
