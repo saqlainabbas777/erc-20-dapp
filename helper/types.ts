@@ -3,3 +3,8 @@ export type ToastTypes = {
     success: string,
     error: string,
 }
+export type ContractMetaData = {
+    name: string | null,
+    symbol: string | null,
+    contractAddress: string | null
+}

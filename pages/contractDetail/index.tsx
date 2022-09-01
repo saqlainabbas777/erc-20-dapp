@@ -1,12 +1,15 @@
 import type {NextPage} from 'next'
-import {Form, Formik, FormikHelpers} from "formik";
+import {Form, Formik} from "formik";
 import {contractConnectSchema} from "../../schema/contractConnect.schema";
 import ErrorMessage from "../../components/errorMessage/errorMessage";
 import {motion, useAnimation} from "framer-motion";
 import {useInView} from "react-intersection-observer";
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import {getContractMetaData} from "../../services/contractService";
 import {toastTransactionProcess} from "../../helper/helperMethod";
+import {AppContext} from "../../context/appContext";
+import {ContractMetaData} from "../../helper/types";
+import {useRouter} from "next/router";
 
 const contractDetailContainer = `grid min-h-screen place-items-center`;
 const cardContainer = `flex flex-col items-center w-full py-4 bg-bgCard rounded-lg border-none shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700`;
@@ -17,11 +20,22 @@ const addressInput = `bg-gray-100 border-none font-josefinSans text-sm rounded-l
 const inputContainer = `flex flex-col w-full`;
 const contractBtn = `bg-lightGold text-whiteOpa90 font-josefinSans font-bold py-2 px-6 rounded-full md:self-start xs:self-end`;
 const ContractDetail: NextPage = () => {
+    const router = useRouter();
+    const {setMetaData} = useContext(AppContext);
     const controls = useAnimation();
     const [ref, inView] = useInView();
     const handleSubmit = async (values: any) => {
         getContractMetaData(values.contractAddress).then(metaData => {
             // put metaData on context and route to the next page
+            console.log(metaData);
+            const contractMetaData: ContractMetaData = {
+                name: metaData.name,
+                symbol: metaData.symbol,
+                contractAddress: values.contractAddress
+            };
+            setMetaData(contractMetaData);
+            // route to next page
+            router.push('/spenderDetail').then();
         }).catch(err => {
             const error = JSON.stringify(err);
         })

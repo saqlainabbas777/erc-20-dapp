@@ -1,20 +1,34 @@
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
+import {ContractMetaData} from "../helper/types";
 
 type AppContextType = {
     userAddress: string;
-    connectWallet: () => void
+    connectWallet: () => void;
+    contractMetaData: ContractMetaData,
+    setMetaData: (metaData: ContractMetaData) => void;
 }
 
 const appContextDefaultValues: AppContextType = {
     userAddress: '',
-    connectWallet: () => {}
+    connectWallet: () => {},
+    contractMetaData: {
+        name: null,
+        symbol: null,
+        contractAddress: null
+    },
+    setMetaData: () => {},
 };
 
 // @ts-ignore
 export const AppProvider = ({children}) => {
     const router = useRouter();
     const [currentAccount, setCurrentAccount] = useState<string>('');
+    const [contractMetaData, setContractMetaData] = useState<ContractMetaData>({
+        name: null,
+        symbol: null,
+        contractAddress: null
+    });
     useEffect(() => {
         checkIfWalletIsConnected().then();
     }, [])
@@ -53,10 +67,15 @@ export const AppProvider = ({children}) => {
         }
     }
 
+    function setMetaData(metaData: ContractMetaData) {
+        setContractMetaData(metaData);
+    }
     return (
         <AppContext.Provider value={{
             userAddress: currentAccount,
-            connectWallet: connectWallet
+            connectWallet: connectWallet,
+            contractMetaData: contractMetaData,
+            setMetaData: setMetaData
         }}>
             {children}
         </AppContext.Provider>
