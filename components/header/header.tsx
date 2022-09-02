@@ -13,13 +13,13 @@ const Header: React.FC<any> = () => {
     return (
         <header ref={ref} className={headerContainer}>
             <motion.h2
-                initial={{opacity: 0, translateX: -50}}
+                initial={{opacity: 0, translateX: +50}}
                 animate={inView ? {opacity: 1, translateX: 0} : {}}
                 transition={{duration: 0.3, delay: 0.6}}
                 className={logo}>ERC-20 Dapp</motion.h2>
             <Tippy content={userAddress} placement={'bottom'}>
                 <motion.div
-                    initial={{opacity: 0, translateX: +50}}
+                    initial={{opacity: 0, translateX: -50}}
                     animate={inView ? {opacity: 1, translateX: 0} : {}}
                     transition={{duration: 0.3, delay: 0.6}}
                     className={walletAddressContainer}>{

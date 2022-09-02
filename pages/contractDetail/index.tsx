@@ -109,10 +109,12 @@ const ContractDetail: NextPage = () => {
                                                 )
                                             }
                                         </div>
-                                        <button
+                                        <motion.button
+                                            whileHover={{scale: 1.07}}
+                                            whileTap={{scale: 0.9}}
                                             className={contractBtn}
                                             type={'submit'}>Connect
-                                        </button>
+                                        </motion.button>
                                     </div>
                                 </Form>
                             )}

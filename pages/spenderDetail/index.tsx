@@ -227,10 +227,12 @@ const SpenderDetail: NextPage = () => {
                                     }
                                     <div
                                         className={spenderDetailButtonContainer}>
-                                        <button
+                                        <motion.button
+                                            whileHover={{scale: 1.07}}
+                                            whileTap={{scale: 0.9}}
                                             className={allowanceBtn}
                                             type={'submit'}>Get Allowance
-                                        </button>
+                                        </motion.button>
                                     </div>
                                 </Form>
                             )}
@@ -293,7 +295,7 @@ const SpenderDetail: NextPage = () => {
                                     </div>
                                     <div
                                         className={spenderDetailButtonContainer}>
-                                        <button
+                                        <motion.button
                                             onClick={() => {
                                                 validateForm().then((res) => {
                                                     if (!res.amount && !res.spenderAddress) {
@@ -301,11 +303,13 @@ const SpenderDetail: NextPage = () => {
                                                     }
                                                 })
                                             }}
+                                            whileHover={{scale: 1.07}}
+                                            whileTap={{scale: 0.9}}
                                             type={'submit'}
                                             className={decreaseAllowanceBtn}
                                         >Decrease Allowance
-                                        </button>
-                                        <button
+                                        </motion.button>
+                                        <motion.button
                                             onClick={() => {
                                                 validateForm().then((res) => {
                                                     if (!res.amount && !res.spenderAddress) {
@@ -313,11 +317,13 @@ const SpenderDetail: NextPage = () => {
                                                     }
                                                 })
                                             }}
+                                            whileHover={{scale: 1.07}}
+                                            whileTap={{scale: 0.9}}
                                             type={'submit'}
                                             className={increaseAllowanceBtn}
                                         >Increase Allowance
-                                        </button>
-                                        <button
+                                        </motion.button>
+                                        <motion.button
                                             onClick={() => {
                                                 validateForm().then((res) => {
                                                     if (!res.amount && !res.spenderAddress) {
@@ -325,10 +331,12 @@ const SpenderDetail: NextPage = () => {
                                                     }
                                                 })
                                             }}
+                                            whileHover={{scale: 1.07}}
+                                            whileTap={{scale: 0.9}}
                                             type={'submit'}
                                             className={allowanceBtn}
                                         >Set Allowance
-                                        </button>
+                                        </motion.button>
                                     </div>
                                 </Form>
                             )}

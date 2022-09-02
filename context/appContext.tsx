@@ -46,7 +46,7 @@ export const AppProvider = ({children}) => {
                 const accounts = await metaMask.request({method: 'eth_requestAccounts'});
                 setCurrentAccount(accounts[0]);
                 if (accounts.length) {
-                    router.push('/ContractDetail').then();
+                    router.push('/contractDetail').then();
                 }
             } catch(error) {
                 throw new Error('No Ethereum Object');
