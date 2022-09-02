@@ -1,13 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
-import {ContractMetaData} from "../helper/types";
+import {AppContextType, ContractMetaData} from "../helper/types";
 
-type AppContextType = {
-    userAddress: string;
-    connectWallet: () => void;
-    contractMetaData: ContractMetaData,
-    setMetaData: (metaData: ContractMetaData) => void;
-}
+
 
 const appContextDefaultValues: AppContextType = {
     userAddress: '',

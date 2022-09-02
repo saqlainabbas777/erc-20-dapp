@@ -8,3 +8,15 @@ export type ContractMetaData = {
     symbol: string | null,
     contractAddress: string | null
 }
+
+export type SpenderData = {
+    userBalance: string,
+    spenderBalance: string,
+    spenderAllowance: string
+}
+export type AppContextType = {
+    userAddress: string;
+    connectWallet: () => void;
+    contractMetaData: ContractMetaData,
+    setMetaData: (metaData: ContractMetaData) => void;
+}

@@ -4,7 +4,7 @@ import {AppContext} from "../../context/appContext";
 import {useRouter} from "next/router";
 import ErrorMessage from "../../components/errorMessage/errorMessage";
 import Header from "../../components/header/header";
-import {Form, Formik, FormikHelpers} from "formik";
+import {Form, Formik} from "formik";
 import {SpenderSchema} from "../../schema/spender.schema";
 import {
     approveAllowance,
@@ -14,6 +14,7 @@ import {
 import {toastMessage, toastTransactionProcess} from "../../helper/helperMethod";
 import {addressSchema} from "../../schema/address.schema";
 import {toast} from "react-toastify";
+import {SpenderData} from "../../helper/types";
 
 
 const spenderContainer = `flex flex-col gap-y-6 items-center justify-center mt-8`;
@@ -34,11 +35,6 @@ const spenderInputsContainer = `flex md:flex-row xs:flex-col xs:gap-2 md:w-full 
 const spenderAddressContainer = `flex flex-col w-full`;
 const spenderAmountContainer = `flex flex-col w-full sm:6/6 md:w-3/6`;
 const input = `bg-gradBlue text-white outline-0 border-none font-josefinSans text-sm rounded-lg  block p-2.5 dark:placeholder-gray-400`;
-type SpenderData = {
-    userBalance: string,
-    spenderBalance: string,
-    spenderAllowance: string
-}
 const SpenderDetail: NextPage = () => {
     const router = useRouter();
     const {userAddress, contractMetaData} = useContext(AppContext);
