@@ -1,6 +1,6 @@
 import type {NextPage} from 'next'
 import {Form, Formik} from "formik";
-import {contractConnectSchema} from "../../schema/contractConnect.schema";
+import {addressSchema} from "../../schema/address.schema";
 import ErrorMessage from "../../components/errorMessage/errorMessage";
 import {motion, useAnimation} from "framer-motion";
 import {useInView} from "react-intersection-observer";
@@ -18,21 +18,21 @@ const cardFlex = `flex flex-col justify-between w-full p-4 leading-normal`;
 const formContainer = `flex md:flex-row xs:flex-col xs: gap-2 w-full justify-between items-start`;
 const addressInput = `bg-gray-100 border-none font-josefinSans text-sm rounded-lg  block md:w-6/6 xs:w-full p-2.5 dark:placeholder-gray-400`;
 const inputContainer = `flex flex-col w-full`;
-const contractBtn = `bg-lightGold text-whiteOpa90 font-josefinSans font-bold py-2 px-6 rounded-full md:self-start xs:self-end`;
+const contractBtn = `bg-lightGold text-whiteOpa90 font-josefinSans font-bold py-2 px-6 rounded-md md:self-start xs:self-end`;
 const ContractDetail: NextPage = () => {
     const router = useRouter();
     const {setMetaData} = useContext(AppContext);
     const controls = useAnimation();
     const [ref, inView] = useInView();
+
     const handleSubmit = async (values: any) => {
         // get the metaData details from blockchain
-        getContractMetaData(values.contractAddress).then(metaData => {
+        getContractMetaData(values.address).then(metaData => {
             // put metaData on context and route to the next page
-            console.log(metaData);
             const contractMetaData: ContractMetaData = {
                 name: metaData.name,
                 symbol: metaData.symbol,
-                contractAddress: values.contractAddress
+                contractAddress: values.address
             };
             setMetaData(contractMetaData);
             // route to next page
@@ -40,7 +40,7 @@ const ContractDetail: NextPage = () => {
         }).catch(err => {
             const error = JSON.stringify(err);
         })
-        await toastTransactionProcess(getContractMetaData(values.contractAddress), {
+        await toastTransactionProcess(getContractMetaData(values.address), {
             pending: 'Fetching Contract Data...',
             success: 'Contract Data Fetched',
             error: 'Unable to access contract through this address'
@@ -74,10 +74,10 @@ const ContractDetail: NextPage = () => {
                         Contract</h5>
                     <Formik
                         initialValues={{
-                            contractAddress: '',
+                            address: '',
                         }}
                         onSubmit={handleSubmit}
-                        validationSchema={contractConnectSchema}
+                        validationSchema={addressSchema}
                     >
                         {({values, handleChange, handleBlur, errors, touched}) => (
                             <Form>
@@ -87,15 +87,15 @@ const ContractDetail: NextPage = () => {
                                         <input
                                             className={addressInput}
                                             type={'text'}
-                                            name={'contractAddress'}
-                                            value={values.contractAddress}
+                                            name={'address'}
+                                            value={values.address}
                                             placeholder={'0x2Rbt31r445Yhj7Ucdd3295blF'}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         />
                                         {
-                                            errors.contractAddress && touched.contractAddress && (
-                                                <ErrorMessage message={errors.contractAddress}/>
+                                            errors.address && touched.address && (
+                                                <ErrorMessage message={errors.address}/>
                                             )
                                         }
                                     </div>

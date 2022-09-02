@@ -1,9 +1,9 @@
 import * as Yup from "yup";
 
-export const contractConnectSchema = Yup.object().shape({
-    contractAddress: Yup.string()
-        .required('contract address is required')
-        .test('len', 'invalid contract address',
+export const addressSchema = Yup.object().shape({
+    address: Yup.string()
+        .required('address is required')
+        .test('len', 'invalid address',
             (val: any) => {
                 if (val !== undefined) {
                     return val.length === 42;

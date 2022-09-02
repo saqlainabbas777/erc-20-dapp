@@ -31,6 +31,16 @@ export const AppProvider = ({children}) => {
     });
     useEffect(() => {
         checkIfWalletIsConnected().then();
+        if (window.ethereum !== undefined) {
+            window.ethereum.on('accountsChanged', (accounts: Array<string>) => {
+                if (accounts.length) {
+                    setCurrentAccount(accounts[0]);
+                } else {
+                    setCurrentAccount('');
+                    router.push('/').then();
+                }
+            });
+        }
     }, [])
 
     const connectWallet = async () => {
@@ -44,7 +54,6 @@ export const AppProvider = ({children}) => {
                     router.push('/ContractDetail').then();
                 }
             } catch(error) {
-                console.log('error', error);
                 throw new Error('No Ethereum Object');
             }
         }
@@ -61,7 +70,6 @@ export const AppProvider = ({children}) => {
                     router.push('/contractDetail').then();
                 }
             } catch(error) {
-                console.log('error', error);
                 throw new Error('No Ethereum Object');
             }
         }
