@@ -3,6 +3,7 @@ import {useContext, useEffect, Fragment, useState} from "react";
 import {AppContext} from "../../context/appContext";
 import {useRouter} from "next/router";
 import ErrorMessage from "../../components/errorMessage/errorMessage";
+import Header from "../../components/header/header";
 import {Form, Formik, FormikHelpers} from "formik";
 import {SpenderSchema} from "../../schema/spender.schema";
 import {
@@ -14,7 +15,8 @@ import {toastMessage, toastTransactionProcess} from "../../helper/helperMethod";
 import {addressSchema} from "../../schema/address.schema";
 import {toast} from "react-toastify";
 
-const spenderContainer = `flex flex-col gap-y-6 items-center justify-center h-screen`;
+
+const spenderContainer = `flex flex-col gap-y-6 items-center justify-center mt-8`;
 const spenderCardsContainer = `bg-bgCard rounded-lg shadow-xl w-4/6`;
 const contractDetailGrid = `grid xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-3 xs:gap-y-2 sm:gap-y-2 grid-flow-row gap-x-4 py-6 px-4`;
 const innerCardContainer = `bg-gradBlue rounded-lg shadow-xl place-items-center py-4 px-6`;
@@ -31,9 +33,7 @@ const spenderDetailHeader = `mb-2 text-2xl font-bold font-josefinSans tracking-t
 const spenderInputsContainer = `flex md:flex-row xs:flex-col xs:gap-2 md:w-full xs:w-6/6 justify-between items-start mb-6`;
 const spenderAddressContainer = `flex flex-col w-full`;
 const spenderAmountContainer = `flex flex-col w-full sm:6/6 md:w-3/6`;
-const input = `bg-gray-100 border-none font-josefinSans text-sm rounded-lg  block p-2.5 dark:placeholder-gray-400`;
-
-
+const input = `bg-gradBlue text-white outline-0 border-none font-josefinSans text-sm rounded-lg  block p-2.5 dark:placeholder-gray-400`;
 type SpenderData = {
     userBalance: string,
     spenderBalance: string,
@@ -71,7 +71,12 @@ const SpenderDetail: NextPage = () => {
                     setSpenderData({...spenderData, spenderAllowance: values.amount})
                 }
             }).catch(err => {
-                toast.update(id, {render: "Error in giving allowance Transaction", type: "error", isLoading: false, autoClose: 3000});
+                toast.update(id, {
+                    render: "Error in giving allowance Transaction",
+                    type: "error",
+                    isLoading: false,
+                    autoClose: 3000
+                });
             });
         }
     }
@@ -81,12 +86,22 @@ const SpenderDetail: NextPage = () => {
         if (contractMetaData.contractAddress !== null) {
             increaseDecreaseAllowance(contractMetaData.contractAddress, values.spenderAddress, values.amount, increaseAllowance).then(res => {
                 if (res !== undefined) {
-                    toast.update(id, {render: `allowance ${increaseAllowance ? 'increased' : 'decreased'}`, type: "success", isLoading: false, autoClose: 3000});
+                    toast.update(id, {
+                        render: `allowance ${increaseAllowance ? 'increased' : 'decreased'}`,
+                        type: "success",
+                        isLoading: false,
+                        autoClose: 3000
+                    });
                     let adjustedAmount = increaseAllowance ? parseInt(spenderData.spenderAllowance) + values.amount : parseInt(spenderData.spenderAllowance) - values.amount;
                     setSpenderData({...spenderData, spenderAllowance: adjustedAmount.toString()})
                 }
             }).catch(err => {
-                toast.update(id, {render: `Error in ${increaseAllowance ? 'increased' : 'decreased'} allowance Transaction`, type: "error", isLoading: false, autoClose: 3000});
+                toast.update(id, {
+                    render: `Error in ${increaseAllowance ? 'increased' : 'decreased'} allowance Transaction`,
+                    type: "error",
+                    isLoading: false,
+                    autoClose: 3000
+                });
             })
         }
     }
@@ -107,6 +122,7 @@ const SpenderDetail: NextPage = () => {
     }
     return (
         <Fragment>
+            <Header/>
             <div className={spenderContainer}>
                 <div className={spenderCardsContainer}>
                     <div
@@ -194,7 +210,8 @@ const SpenderDetail: NextPage = () => {
                                 spenderAddress: '',
                                 amount: ''
                             }}
-                            onSubmit={() => {}}
+                            onSubmit={() => {
+                            }}
                             validationSchema={SpenderSchema}
                         >
                             {({values, handleChange, handleBlur, errors, touched, validateForm}) => (
@@ -253,7 +270,8 @@ const SpenderDetail: NextPage = () => {
                                             onClick={() => {
                                                 validateForm().then((res) => {
                                                     if (!res.amount && !res.spenderAddress) {
-                                                        handleIncreaseDecreaseAllowance(values, true).then()                                                      }
+                                                        handleIncreaseDecreaseAllowance(values, true).then()
+                                                    }
                                                 })
                                             }}
                                             type={'submit'}
@@ -270,7 +288,7 @@ const SpenderDetail: NextPage = () => {
                                             }}
                                             type={'submit'}
                                             className={allowanceBtn}
-                                            >Set Allowance
+                                        >Set Allowance
                                         </button>
                                     </div>
                                 </Form>

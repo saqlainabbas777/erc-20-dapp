@@ -12,6 +12,11 @@ module.exports = {
       lg: '976px',
       xl: '1440px',
     },
+    minHeight: {
+      '1/2': '50%',
+      '3/4': '80%',
+      '80': '80vh',
+    },
     colors: {
       lightGold: '#b09a40',
       gradBlue: '#07242F',

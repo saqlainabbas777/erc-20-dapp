@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tippyjs/react": "^4.2.6",
     "ethers": "^5.7.0",
     "formik": "^2.2.9",
     "framer-motion": "^7.2.1",

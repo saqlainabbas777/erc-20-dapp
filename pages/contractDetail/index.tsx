@@ -4,19 +4,20 @@ import {addressSchema} from "../../schema/address.schema";
 import ErrorMessage from "../../components/errorMessage/errorMessage";
 import {motion, useAnimation} from "framer-motion";
 import {useInView} from "react-intersection-observer";
-import {useContext, useEffect} from "react";
+import {useContext, useEffect, Fragment} from "react";
 import {getContractMetaData} from "../../services/contractService";
 import {toastTransactionProcess} from "../../helper/helperMethod";
 import {AppContext} from "../../context/appContext";
 import {ContractMetaData} from "../../helper/types";
 import {useRouter} from "next/router";
+import Header from "../../components/header/header";
 
-const contractDetailContainer = `grid min-h-screen place-items-center`;
+const contractDetailContainer = `grid min-h-80 place-items-center`;
 const cardContainer = `flex flex-col items-center w-full py-4 bg-bgCard rounded-lg border-none shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700`;
 const cardHeader = `mb-2 text-2xl font-bold font-josefinSans tracking-tight text-lightGold dark:text-white`;
 const cardFlex = `flex flex-col justify-between w-full p-4 leading-normal`;
 const formContainer = `flex md:flex-row xs:flex-col xs: gap-2 w-full justify-between items-start`;
-const addressInput = `bg-gray-100 border-none font-josefinSans text-sm rounded-lg  block md:w-6/6 xs:w-full p-2.5 dark:placeholder-gray-400`;
+const addressInput = `bg-gradBlue text-white outline-0 border-none font-josefinSans text-sm rounded-lg  block md:w-6/6 xs:w-full p-2.5 dark:placeholder-gray-400`;
 const inputContainer = `flex flex-col w-full`;
 const contractBtn = `bg-lightGold text-whiteOpa90 font-josefinSans font-bold py-2 px-6 rounded-md md:self-start xs:self-end`;
 const ContractDetail: NextPage = () => {
@@ -66,50 +67,53 @@ const ContractDetail: NextPage = () => {
         }
     }, [controls, inView])
     return (
-        <div className={contractDetailContainer}>
-            <motion.div ref={ref} animate={controls}
-                className={cardContainer}>
-                <div className={cardFlex}>
-                    <h5 className={cardHeader}>Connect
-                        Contract</h5>
-                    <Formik
-                        initialValues={{
-                            address: '',
-                        }}
-                        onSubmit={handleSubmit}
-                        validationSchema={addressSchema}
-                    >
-                        {({values, handleChange, handleBlur, errors, touched}) => (
-                            <Form>
-                                <div
-                                    className={formContainer}>
-                                    <div className={inputContainer}>
-                                        <input
-                                            className={addressInput}
-                                            type={'text'}
-                                            name={'address'}
-                                            value={values.address}
-                                            placeholder={'0x2Rbt31r445Yhj7Ucdd3295blF'}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                        {
-                                            errors.address && touched.address && (
-                                                <ErrorMessage message={errors.address}/>
-                                            )
-                                        }
+        <Fragment>
+            <Header/>
+            <div className={contractDetailContainer}>
+                <motion.div ref={ref} animate={controls}
+                            className={cardContainer}>
+                    <div className={cardFlex}>
+                        <h5 className={cardHeader}>Connect
+                            Contract</h5>
+                        <Formik
+                            initialValues={{
+                                address: '',
+                            }}
+                            onSubmit={handleSubmit}
+                            validationSchema={addressSchema}
+                        >
+                            {({values, handleChange, handleBlur, errors, touched}) => (
+                                <Form>
+                                    <div
+                                        className={formContainer}>
+                                        <div className={inputContainer}>
+                                            <input
+                                                className={addressInput}
+                                                type={'text'}
+                                                name={'address'}
+                                                value={values.address}
+                                                placeholder={'0x2Rbt31r445Yhj7Ucdd3295blF'}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />
+                                            {
+                                                errors.address && touched.address && (
+                                                    <ErrorMessage message={errors.address}/>
+                                                )
+                                            }
+                                        </div>
+                                        <button
+                                            className={contractBtn}
+                                            type={'submit'}>Connect
+                                        </button>
                                     </div>
-                                    <button
-                                        className={contractBtn}
-                                        type={'submit'}>Connect
-                                    </button>
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
-                </div>
-            </motion.div>
-        </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
+                </motion.div>
+            </div>
+        </Fragment>
     )
 }
 
