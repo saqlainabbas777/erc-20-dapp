@@ -25,6 +25,7 @@ const ContractDetail: NextPage = () => {
     const controls = useAnimation();
     const [ref, inView] = useInView();
     const handleSubmit = async (values: any) => {
+        // get the metaData details from blockchain
         getContractMetaData(values.contractAddress).then(metaData => {
             // put metaData on context and route to the next page
             console.log(metaData);
