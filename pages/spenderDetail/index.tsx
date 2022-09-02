@@ -15,6 +15,8 @@ import {toastMessage, toastTransactionProcess} from "../../helper/helperMethod";
 import {addressSchema} from "../../schema/address.schema";
 import {toast} from "react-toastify";
 import {SpenderData} from "../../helper/types";
+import {motion, useAnimation} from "framer-motion";
+import {useInView} from "react-intersection-observer";
 
 
 const spenderContainer = `flex flex-col gap-y-6 items-center justify-center mt-8`;
@@ -43,6 +45,9 @@ const SpenderDetail: NextPage = () => {
         spenderAllowance: '',
         spenderBalance: ''
     });
+    const controls = useAnimation();
+    const getAllowanceControls = useAnimation();
+    const [ref, inView] = useInView();
     useEffect(() => {
         if (contractMetaData.name === null ||
             contractMetaData.symbol === null ||
@@ -57,6 +62,25 @@ const SpenderDetail: NextPage = () => {
             });
         }
     }, [])
+
+    useEffect(() => {
+        if (inView) {
+            controls.set({
+                y: +50,
+                opacity: 0,
+                transition: {}
+            });
+            controls.start({
+                y: 0,
+                opacity: 1,
+                transition: {
+                    type: "bounceIn",
+                    duration: .5,
+                    delay: .4,
+                }
+            }).then();
+        }
+    }, [controls ,inView])
 
     const handleSetAllowance = async (values: any) => {
         const id = toast.loading('giving allowance to spender');
@@ -119,8 +143,12 @@ const SpenderDetail: NextPage = () => {
     return (
         <Fragment>
             <Header/>
-            <div className={spenderContainer}>
-                <div className={spenderCardsContainer}>
+            <div ref={ref} className={spenderContainer}>
+                <motion.div
+                    initial={{opacity: 0, translateX: +50}}
+                    animate={inView ? {opacity: 1, translateX: 0} : {}}
+                    transition={{duration: 0.3, delay: 0.6}}
+                    className={spenderCardsContainer}>
                     <div
                         className={contractDetailGrid}>
                         <div className={innerCardContainer}>
@@ -136,8 +164,12 @@ const SpenderDetail: NextPage = () => {
                             <h2 className={innerCardDesc}>Your Balance</h2>
                         </div>
                     </div>
-                </div>
-                <div className={spenderCardsContainer}>
+                </motion.div>
+                <motion.div
+                    initial={{opacity: 0, translateX: -50}}
+                    animate={inView ? {opacity: 1, translateX: 0} : {}}
+                    transition={{duration: 0.3, delay: 0.6}}
+                    className={spenderCardsContainer}>
                     <div
                         className={spenderDetailContainer}>
                         <Formik
@@ -173,7 +205,7 @@ const SpenderDetail: NextPage = () => {
                                         spenderData.spenderAllowance !== '' &&
                                         spenderData.spenderBalance !== '' &&
                                         values.address !== '' &&
-                                        <div className={spenderDetailCardsContainer}>
+                                        <motion.div animate={controls} className={spenderDetailCardsContainer}>
                                             <div
                                                 className={innerCardContainer}>
                                                 <h2 className={innerCardData}>{spenderData.spenderAllowance}</h2>
@@ -184,7 +216,7 @@ const SpenderDetail: NextPage = () => {
                                                 <h2 className={innerCardData}>{spenderData.spenderBalance}</h2>
                                                 <h2 className={innerCardDesc}>spender current balance</h2>
                                             </div>
-                                        </div>
+                                        </motion.div>
                                     }
                                     <div
                                         className={spenderDetailButtonContainer}>
@@ -197,8 +229,12 @@ const SpenderDetail: NextPage = () => {
                             )}
                         </Formik>
                     </div>
-                </div>
-                <div className={spenderCardsContainer}>
+                </motion.div>
+                <motion.div
+                    initial={{opacity: 0, translateX: +50}}
+                    animate={inView ? {opacity: 1, translateX: 0} : {}}
+                    transition={{duration: 0.3, delay: 0.6}}
+                    className={spenderCardsContainer}>
                     <div
                         className={spenderDetailContainer}>
                         <Formik
@@ -291,7 +327,7 @@ const SpenderDetail: NextPage = () => {
                             )}
                         </Formik>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </Fragment>
     )
