@@ -11,7 +11,7 @@ import {
     getAllowanceAndBalanceOf,
     getBalanceOfAddress, increaseDecreaseAllowance,
 } from "../../services/contractService";
-import {toastMessage, toastTransactionProcess} from "../../helper/helperMethod";
+import {toastMessage} from "../../helper/helperMethod";
 import {addressSchema} from "../../schema/address.schema";
 import {toast} from "react-toastify";
 import {SpenderData} from "../../helper/types";
@@ -46,7 +46,6 @@ const SpenderDetail: NextPage = () => {
         spenderBalance: ''
     });
     const controls = useAnimation();
-    const getAllowanceControls = useAnimation();
     const [ref, inView] = useInView();
     useEffect(() => {
         if (contractMetaData.name === null ||
@@ -102,7 +101,7 @@ const SpenderDetail: NextPage = () => {
     }
 
     const handleIncreaseDecreaseAllowance = async (values: any, increaseAllowance: boolean) => {
-        const id = toast.loading(`${increaseAllowance ? 'increasing' : 'decreasing'} allowance to spender`);
+        const id = toast.loading(`${increaseAllowance ? 'increasing' : 'decreasing'} allowance of spender`);
         if (contractMetaData.contractAddress !== null) {
             increaseDecreaseAllowance(contractMetaData.contractAddress, values.spenderAddress, values.amount, increaseAllowance).then(res => {
                 if (res !== undefined) {
@@ -128,16 +127,24 @@ const SpenderDetail: NextPage = () => {
 
 
     const handleGetAllowance = async (values: any) => {
+        const id = toast.loading(`Fetching spender allowance...`);
         if (contractMetaData.contractAddress !== null) {
             getAllowanceAndBalanceOf(contractMetaData.contractAddress, userAddress, values.address).then(res => {
+                toast.update(id, {
+                    render: `Spender allowance Fetched`,
+                    type: "success",
+                    isLoading: false,
+                    autoClose: 3000
+                });
                 setSpenderData({...spenderData, spenderAllowance: res.allowance, spenderBalance: res.spenderBalance});
             }).catch(err => {
+                toast.update(id, {
+                    render: `Error in fetching spender allowance`,
+                    type: "error",
+                    isLoading: false,
+                    autoClose: 3000
+                });
             })
-            await toastTransactionProcess(getAllowanceAndBalanceOf(contractMetaData.contractAddress, userAddress, values.address), {
-                pending: 'Fetching spender allowance...',
-                success: 'Spender allowance Fetched',
-                error: 'Error in fetching spender allowance'
-            });
         }
     }
     return (
@@ -190,7 +197,7 @@ const SpenderDetail: NextPage = () => {
                                                 type={'text'}
                                                 name={'address'}
                                                 value={values.address}
-                                                placeholder={'spender Address'}
+                                                placeholder={'Spender Address'}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
@@ -257,7 +264,7 @@ const SpenderDetail: NextPage = () => {
                                                 type={'text'}
                                                 name={'spenderAddress'}
                                                 value={values.spenderAddress}
-                                                placeholder={'spender Address'}
+                                                placeholder={'Spender Address'}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
